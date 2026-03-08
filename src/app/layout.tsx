@@ -2,6 +2,14 @@ import type { Metadata } from "next";
 import { Inter, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/Theme-provider";
+import {dark} from "@clerk/themes";
+import {
+  ClerkProvider,
+  Show,
+  SignInButton,
+  SignUpButton,
+  UserButton
+} from "@clerk/nextjs";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -11,7 +19,7 @@ const inter = Inter({
 const plexMono = IBM_Plex_Mono({
   variable: "--font-plex-mono",
   subsets: ["latin"],
-  weight:["400","500","600","700"]
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -21,21 +29,44 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${inter.variable} ${plexMono.variable} antialiased`}
-      >
-        <ThemeProvider
-        attribute="class"
-        defaultTheme="dark"
-        enableSystem
-        disableTransitionOnChange>
-        {children}
-        </ThemeProvider>
+      <body className={`${inter.variable} ${plexMono.variable} antialiased`}>
+        <ClerkProvider
+        appearance={{
+          theme:dark,
+        }}
+        >
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+
+            <header className="flex justify-end items-center p-4 gap-4 h-16">
+  
+  <Show when="signed-out">
+    <SignInButton />
+    <SignUpButton>
+      <button className="bg-[#6c47ff] text-white rounded-full px-4 py-2">
+        Sign Up
+      </button>
+    </SignUpButton>
+  </Show>
+
+  <Show when="signed-in">
+    <UserButton />
+  </Show>
+
+</header>
+
+          </ThemeProvider>
+          </ClerkProvider>
+        
       </body>
     </html>
   );
