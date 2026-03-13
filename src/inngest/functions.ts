@@ -95,9 +95,11 @@ if (!prompt) {
         experimental_telemetry: {
           isEnabled: true,
           recordInputs: true,
-          recordOutputs: true,
-        },
-      });
+          recordOutputs: true, 
+      },
+    });
+    
+
 
       console.log("✅ AI response received");
 
