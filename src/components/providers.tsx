@@ -15,6 +15,7 @@ import { UnauthenticatedView } from "../features/auth/unauthenticated_view";
 import { AuthLoadingView } from "../features/auth/auth-loading-view";
 
 import { ThemeProvider } from "./theme-provider";
+import { DebugAuth } from "./debug-auth";
 
 const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 
@@ -28,6 +29,7 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
           enableSystem
           disableTransitionOnChange
         >
+          <DebugAuth/>
           <Authenticated>
             {children}
           </Authenticated>

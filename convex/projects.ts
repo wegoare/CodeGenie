@@ -49,13 +49,14 @@ export const get = query({
 });
 
 export const getById = query({
-  args: {
-    id: v.id("projects")
-  },
+  args: { id: v.id("projects") },
   handler: async (ctx, args) => {
     const identity = await verifyAuth(ctx);
 
-    const project = await ctx.db.get("projects", args.id);
+    const project = await ctx.db.get(args.id);
+
+    console.log("Current user:", identity.subject);
+    console.log("Project owner:", project?.ownerId);
 
     if (!project) {
       throw new Error("Project not found");

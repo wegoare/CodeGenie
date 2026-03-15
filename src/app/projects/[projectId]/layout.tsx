@@ -6,13 +6,13 @@ const Layout = async ({
   params,
 }: {
   children: React.ReactNode;
-  params: { projectId: string };
+  params: Promise<{ projectId: string }>;
 }) => {
 
-  const projectId = params.projectId as Id<"projects">;
+  const { projectId } = await params;
 
   return (
-    <ProjectIdLayout projectId={projectId}>
+    <ProjectIdLayout projectId={projectId as Id<"projects">}>
       {children}
     </ProjectIdLayout>
   );

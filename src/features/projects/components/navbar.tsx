@@ -27,6 +27,17 @@ import { cn } from "@/lib/utils";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { useProject, useRenameProject } from "../hooks/use-projects";
 
+import { useAuth } from "@clerk/nextjs";
+
+export function DebugAuth() {
+  const { userId, isLoaded } = useAuth();
+
+  console.log("Auth Loaded:", isLoaded);
+  console.log("User ID:", userId);
+
+  return null;
+}
+
 const font = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
