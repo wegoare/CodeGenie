@@ -1,4 +1,5 @@
 import { ShieldAlertIcon } from "lucide-react";
+import { SignInButton, SignOutButton, useAuth } from "@clerk/nextjs";
 
 import {
   Item,
@@ -7,11 +8,12 @@ import {
   ItemDescription,
   ItemMedia,
   ItemTitle,
-} from "@/components/ui/item";
-import { SignInButton } from "@clerk/nextjs";
-import { Button } from "@/components/ui/button";
+} from "../../components/ui/item";
+import { Button } from "../../components/ui/button";
 
 export const UnauthenticatedView = () => {
+  const { isSignedIn } = useAuth();
+
   return (
     <div className="flex items-center justify-center h-screen bg-background">
       <div className="w-full max-w-lg bg-muted">
@@ -22,15 +24,25 @@ export const UnauthenticatedView = () => {
           <ItemContent>
             <ItemTitle>Unauthorized Access</ItemTitle>
             <ItemDescription>
-              You are not authorized to access this resource.
+              {isSignedIn
+                ? "Your session could not be verified. Please sign out and sign back in."
+                : "You are not authorized to access this resource."}
             </ItemDescription>
           </ItemContent>
           <ItemActions>
-            <SignInButton>
-              <Button variant="outline" size="sm">
-                Sign in
-              </Button>
-            </SignInButton>
+            {isSignedIn ? (
+              <SignOutButton>
+                <Button variant="outline" size="sm">
+                  Sign out
+                </Button>
+              </SignOutButton>
+            ) : (
+              <SignInButton mode="modal">
+                <Button variant="outline" size="sm">
+                  Sign in
+                </Button>
+              </SignInButton>
+            )}
           </ItemActions>
         </Item>
       </div>

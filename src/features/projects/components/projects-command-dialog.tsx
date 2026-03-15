@@ -9,7 +9,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command";
+} from "../../../components/ui/command";
 
 import { useProjects } from "../hooks/use-projects";
 import { Doc } from "../../../../convex/_generated/dataModel";

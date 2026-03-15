@@ -3,9 +3,9 @@ import { FaGithub } from "react-icons/fa";
 import { formatDistanceToNow } from "date-fns";
 import { AlertCircleIcon, ArrowRightIcon, GlobeIcon, Loader2Icon } from "lucide-react";
 
-import { Kbd } from "@/components/ui/kbd";
-import { Spinner } from "@/components/ui/spinner";
-import { Button } from "@/components/ui/button";
+import { Kbd } from "../../../components/ui/kbd";
+import { Spinner } from "../../../components/ui/spinner";
+import { Button } from "../../../components/ui/button";
 
 import { Doc } from "../../../../convex/_generated/dataModel";
 
