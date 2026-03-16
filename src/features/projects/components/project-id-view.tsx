@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { Allotment } from "allotment";
 import { FaGithub } from "react-icons/fa";
-
-import { cn } from "@/lib/utils";
+import {cn} from "lib/utils"
 import { EditorView } from "../../editor/components/editor-view";
 
 import { FileExplorer } from "./file-explorer";

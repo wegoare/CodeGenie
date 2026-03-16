@@ -1,14 +1,10 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, Inter, Geist } from "next/font/google";
+import { IBM_Plex_Mono, Inter } from "next/font/google";
 
-import { Providers } from "../components/providers";
+import { Toaster } from "../../src/components/ui/sonner";
+import { Providers } from "../../src/components/providers";
 
 import "./globals.css";
-import { cn } from "@/lib/utils";
-import { TooltipProvider } from "../components/ui/tooltip";
-import { ClerkProvider } from "@clerk/nextjs";
-
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const inter = Inter({
   variable: "--font-inter",
@@ -32,14 +28,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-      <html lang="en" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
+      <html lang="en" suppressHydrationWarning>
         <body
           className={`${inter.variable} ${plexMono.variable} antialiased`}
-        ><TooltipProvider>
+        >
           <Providers>
             {children}
+            <Toaster />
           </Providers>
-          </TooltipProvider>
         </body>
       </html>
   );
