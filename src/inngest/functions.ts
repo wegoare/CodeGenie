@@ -14,17 +14,18 @@ export const demoGenerate = inngest.createFunction(
 
     const prompt = event.data?.prompt;
 
-if (!prompt) {
-  console.error("❌ Prompt missing from event:", event);
+    if (!prompt) {
+      console.error("❌ Prompt missing from event:", event);
 
-  return {
-    error: "Prompt not provided",
-  };
-}
+      return {
+        success: false,
+        error: "Prompt not provided",
+      };
+    }
 
     console.log("📥 Received prompt:", prompt);
 
-    // STEP 1: Extract URLs
+    // ✅ STEP 1: Extract URLs
     const urls = (await step.run("extract-urls", async () => {
       console.log("🔎 Extracting URLs from prompt");
 
@@ -39,7 +40,7 @@ if (!prompt) {
 
     let scrapedContent = "";
 
-    // STEP 2: Scrape URLs if they exist
+    // ✅ STEP 2: Scrape URLs
     if (urls.length > 0) {
       console.log("🌐 URLs detected, starting scraping");
 
@@ -69,43 +70,67 @@ if (!prompt) {
 
         console.log("📄 Combined scraped content length:", combined.length);
 
-        return combined;
+        // 🔥 Limit size to avoid token overflow
+        const MAX_CHARS = 8000;
+        return combined.slice(0, MAX_CHARS);
       });
     } else {
       console.log("⚠️ No URLs found, skipping scraping");
     }
 
-    console.log("📚 Scraped content preview:", scrapedContent?.slice(0, 200));
+    console.log(
+      "📚 Scraped content preview:",
+      scrapedContent?.slice(0, 200)
+    );
 
-    // STEP 3: Build final prompt
+    // ✅ STEP 3: Build final prompt
     const finalPrompt = scrapedContent
-      ? `Context:\n${scrapedContent}\n\nQuestion:${prompt}`
+      ? `You are given the following context:\n\n${scrapedContent}\n\nAnswer this question:\n${prompt}`
       : prompt;
 
     console.log("🧠 Final prompt prepared");
-    console.log("📝 Final prompt preview:", finalPrompt.slice(0, 200));
 
-    // STEP 4: Generate AI response
+    // ✅ STEP 4: Generate AI response
     const result = await step.run("generate-text", async () => {
-      console.log("🤖 Sending prompt to Gemini");
+      try {
+        console.log("🤖 Sending prompt to Gemini");
 
-      const response = await generateText({
-        model: google("gemini-2.5-flash"),
-        prompt: finalPrompt,
-        experimental_telemetry: {
-          isEnabled: true,
-          recordInputs: true,
-          recordOutputs: true, 
-      },
-    });
-    
+        const response = await generateText({
+          model: google("gemini-2.5-flash"),
+          prompt: finalPrompt,
+          experimental_telemetry: {
+            isEnabled: true,
+            recordInputs: true,
+            recordOutputs: true,
+          },
+        });
 
+        console.log("✅ AI response received");
 
-      console.log("✅ AI response received");
-
-      return response.text;
+        return response.text;
+      } catch (error) {
+        console.error("❌ AI generation failed:", error);
+        return "Failed to generate response";
+      }
     });
 
     console.log("🎉 Function finished successfully");
+
+    // ✅ IMPORTANT: return result
+    return {
+      success: true,
+      data: result,
+    };
+  }
+);
+
+
+// ✅ OPTIONAL: demoError (only if you want testing)
+export const demoError = inngest.createFunction(
+  { id: "demo-error" },
+  { event: "demo/error" },
+  async () => {
+    console.log("💥 demoError triggered");
+    throw new Error("This is a demo error");
   }
 );
