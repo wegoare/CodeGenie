@@ -37,7 +37,7 @@ export const processMessage = inngest.createFunction(
     ],
     onFailure: async ({ event, step }) => {
       const { messageId } = event.data.event.data as MessageEvent;
-      const internalKey = process.env.POLARIS_CONVEX_INTERNAL_KEY;
+      const internalKey = process.env.CODEGENIE_CONVEX_INTERNAL_KEY;
 
       if (internalKey) {
         await step.run("update-message-on-failure", async () => {
@@ -62,10 +62,10 @@ export const processMessage = inngest.createFunction(
       message
     } = event.data as MessageEvent;
 
-    const internalKey = process.env.POLARIS_CONVEX_INTERNAL_KEY; 
+    const internalKey = process.env.CODEGENIE_CONVEX_INTERNAL_KEY; 
 
     if (!internalKey) {
-      throw new NonRetriableError("POLARIS_CONVEX_INTERNAL_KEY is not configured");
+      throw new NonRetriableError("CODEGENIE_CONVEX_INTERNAL_KEY is not configured");
     }
 
     await step.sleep("wait-for-db-sync", "1s");
@@ -151,7 +151,7 @@ export const processMessage = inngest.createFunction(
     }
 
     const codingAgent = createAgent({
-      name: "polaris",
+      name: "codegenie",
       description: "An expert AI coding assistant",
       system: systemPrompt,
       model: gemini({
@@ -178,7 +178,7 @@ export const processMessage = inngest.createFunction(
     });
 
     const network = createNetwork({
-      name: "polaris-network",
+      name: "codegenie-network",
       agents: [codingAgent],
       maxIter: 20,
       router: ({ network }) => {
