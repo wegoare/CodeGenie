@@ -95,7 +95,7 @@ export const Navbar = ({
                 >
                   <Link href="/">
                     <Image
-                      src="/logo.svg"
+                      src="/genie-logo.jpg"
                       alt="Logo"
                       width={20}
                       height={20}

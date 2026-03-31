@@ -39,7 +39,7 @@ export const EditorView = ({ projectId }: { projectId: Id<"projects"> }) => {
         {!activeFile && (
           <div className="size-full flex items-center justify-center">
             <Image
-              src="/logo-alt.svg"
+              src="/genie-logo.jpg"
               alt="Codegenie"
               width={50}
               height={50}
